@@ -5,13 +5,48 @@ using UnityEngine.UI;
 
 public class Button : MonoBehaviour
 {
-    public Image image{get{return _image;}}
+    public Image image { get { return _image; } }
+    public KeyCode pressedCode = KeyCode.None;
+    public bool isSelected { get { return _isSelected; } set { _isSelected = value; } }
     Image _image;
     Bounds _bounds;
+    bool _isSelected = false;
 
+    [SerializeField] ButtonType type;
     [SerializeField] bool noticeOnDown = false;
-    [SerializeField] Sprite normal;
-    [SerializeField] Sprite pushed;
+    [SerializeField] Sprite _normal;
+    Sprite pushed
+    {
+        get
+        {
+            if (_pushed == null)
+            {
+                return _normal;
+            }
+            return _pushed;
+        }
+
+        set
+        {
+            _pushed = value;
+        }
+    }
+
+    Sprite selected
+    {
+        get
+        {
+            if (_selected == null)
+            {
+                return _normal;
+            }
+
+            return _selected;
+        }
+    }
+
+    [SerializeField] Sprite _pushed;
+    [SerializeField] Sprite _selected;
 
     List<IButtonListener> buttonListeners = new List<IButtonListener>();
 
@@ -21,29 +56,32 @@ public class Button : MonoBehaviour
     void Start()
     {
         _image = GetComponent<Image>();
+        InitBounds();
+    }
 
-
-
-
-        _bounds = normal.bounds;
-
-
+    void InitBounds()
+    {
+        _bounds = _normal.bounds;
         _bounds.extents *= _image.rectTransform.lossyScale.x * 2;
     }
 
-    public void CopyButton(Button button)
+    public void InitButton(Button button)
     {
-        this.normal = button.normal;
+        this._normal = button._normal;
         this.pushed = button.pushed;
         this.noticeOnDown = button.noticeOnDown;
+
+        InitBounds();
     }
+
+
 
     public void ClearListeners()
     {
         buttonListeners.Clear();
     }
 
-    public bool AddObserver(IButtonListener listener)
+    public bool AddListener(IButtonListener listener)
     {
         if (!buttonListeners.Contains(listener))
         {
@@ -65,13 +103,16 @@ public class Button : MonoBehaviour
         return false;
     }
 
+
+
     void Notice(bool holded)
     {
         for (int i = 0; i < buttonListeners.Count; i++)
         {
-            buttonListeners[i].OnNotice(holded);
+            buttonListeners[i].OnNotice(this);
         }
     }
+
 
     /// <summary>
     /// STANDALONE向けUPDATE
@@ -82,10 +123,25 @@ public class Button : MonoBehaviour
     {
         _bounds.center = (Vector2)transform.position;
 
+        if (type == ButtonType.selectOnHover)
+        {
+            if (_bounds.Contains(context.position))
+            {
+                _isSelected = true;
+                image.sprite = selected;
+            }
+            else
+            {
+                _isSelected = false;
+                image.sprite = _normal;
+            }
+        }
+
+
         if (context.state == InputState.none || !_bounds.Contains(context.position))
         {
             _interactFrame = 0;
-            _image.sprite = normal;
+            _image.sprite = _normal;
 
             return;
         }
@@ -146,7 +202,7 @@ public class Button : MonoBehaviour
             }
 
             _interactFrame = 0;
-            _image.sprite = normal;
+            _image.sprite = _normal;
         }
         else
         {
@@ -165,5 +221,18 @@ public class Button : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        _isSelected = false;
+    }
 
+
+}
+
+public enum ButtonType
+{
+    //普通の一回押したら信号を発信するボタン
+    normal,
+    //hoverでselectedになるボタン
+    selectOnHover
 }

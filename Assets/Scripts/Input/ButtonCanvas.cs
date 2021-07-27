@@ -5,7 +5,7 @@ using System.Linq;
 [RequireComponent(typeof(CanvasGroup))]
 public class ButtonCanvas : MonoBehaviour
 {
-    public List<Button> buttonList{get{return _buttonList;}}
+    public List<Button> buttonList { get { return _buttonList; } }
 
     List<Button> _buttonList = new List<Button>();
 
@@ -53,7 +53,7 @@ public class ButtonCanvas : MonoBehaviour
 
         for (int i = 0; i < buttonList.Count; i++)
         {
-            buttonList[i].UpdateButton(Camera.current.ScreenToWorldPoint(clickPosition));
+            throw new System.NotImplementedException();
         }
 #endif
 
@@ -63,6 +63,7 @@ public class ButtonCanvas : MonoBehaviour
 
         lastState = context.state;
         context.state = InputState.none;
+
 
         for (int i = 0; i < observeButtons.Length; i++)
         {
