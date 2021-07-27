@@ -31,6 +31,18 @@ public class Button : MonoBehaviour
             _pushed = value;
         }
     }
+    Sprite normal
+    {
+        get
+        {
+            return _normal;
+        }
+
+        set
+        {
+            _normal = value;
+        }
+    }
 
     Sprite selected
     {
@@ -42,6 +54,10 @@ public class Button : MonoBehaviour
             }
 
             return _selected;
+        }
+
+        set{
+            _selected = value;
         }
     }
 
@@ -105,7 +121,7 @@ public class Button : MonoBehaviour
 
 
 
-    void Notice(bool holded)
+    void Notice()
     {
         for (int i = 0; i < buttonListeners.Count; i++)
         {
@@ -121,6 +137,8 @@ public class Button : MonoBehaviour
     /// <param name="leftButton"></param>
     public void UpdateButton(MouceContext context)
     {
+        pressedCode = KeyCode.None;
+
         _bounds.center = (Vector2)transform.position;
 
         if (type == ButtonType.selectOnHover)
@@ -156,7 +174,8 @@ public class Button : MonoBehaviour
                     if (noticeOnDown)
                     {
                         //マウスの時は右クリックでholdと等価
-                        Notice(context.key == KeyCode.Mouse1);
+                        pressedCode = context.key;
+                        Notice();
                     }
                 }
 
@@ -168,7 +187,8 @@ public class Button : MonoBehaviour
                 if (_interactFrame > 0 && !noticeOnDown)
                 {
                     _interactFrame = 0;
-                    Notice(context.key == KeyCode.Mouse1);
+                    pressedCode = context.key;
+                    Notice();
                 }
             }
 
@@ -186,6 +206,8 @@ public class Button : MonoBehaviour
     /// <param name="position"></param>
     public void UpdateButton(Vector2 position)
     {
+        pressedCode = KeyCode.None;
+
         _bounds.center = (Vector2)transform.position;
 
 
@@ -197,7 +219,9 @@ public class Button : MonoBehaviour
             {
                 if (!noticeOnDown && _interactFrame > InputConfig.tapFrame)
                 {
-                    Notice(false);
+                    //スマホは二種類しかないことが保証されているので、mouse0,1で分別する。とりあえず。
+                    pressedCode = KeyCode.Mouse0;
+                    Notice();
                 }
             }
 
@@ -211,12 +235,14 @@ public class Button : MonoBehaviour
 
             if (noticeOnDown && _interactFrame == InputConfig.tapFrame)
             {
-                Notice(false);
+                pressedCode = KeyCode.Mouse0;
+                Notice();
             }
             //hold判定
             else if (_interactFrame == InputConfig.holdFrame)
             {
-                Notice(true);
+                pressedCode = KeyCode.Mouse1;
+                Notice();
             }
         }
     }
