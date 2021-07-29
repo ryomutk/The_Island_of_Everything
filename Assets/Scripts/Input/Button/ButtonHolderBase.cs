@@ -1,19 +1,22 @@
 using UnityEngine;
+using System.Collections.Generic;
 using Utility.ObjPool;
 
-[RequireComponent(typeof(ButtonCanvas))]
-public abstract class ButtonPool:MonoBehaviour
+[RequireComponent(typeof(ButtonGroup))]
+public abstract class ButtonHolderBase : MonoBehaviour
 {
     InstantPool<Button> instancePool;
     [SerializeField] Button buttonPref;
     [SerializeField] int initNum;
-    ButtonCanvas canvas;
+    ButtonGroup canvas;
+    public List<Button> buttonList { get; private set; }
 
     void Start()
     {
+        buttonList = new List<Button>();
         instancePool = new InstantPool<Button>(transform);
-        instancePool.CreatePool(buttonPref,initNum);
-        canvas  = GetComponent<ButtonCanvas>();
+        instancePool.CreatePool(buttonPref, initNum);
+        canvas = GetComponent<ButtonGroup>();
     }
 
 
@@ -25,11 +28,13 @@ public abstract class ButtonPool:MonoBehaviour
 
     protected bool RegisterButton(Button button)
     {
+        buttonList.Add(button);
         return canvas.RegisterButton(button);
     }
 
-    protected bool RemoveButton(Button button)
+    protected bool RemoveFromCanvas(Button button)
     {
+        buttonList.Remove(button);
         return canvas.RemoveButton(button);
     }
 

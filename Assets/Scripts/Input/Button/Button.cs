@@ -90,7 +90,10 @@ public class Button : MonoBehaviour
         InitBounds();
     }
 
-
+    public bool CheckIfListening(IButtonListener listener)
+    {
+        return buttonListeners.Contains(listener);
+    }
 
     public void ClearListeners()
     {

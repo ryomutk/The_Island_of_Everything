@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class ButtonCanvas : MonoBehaviour
+public class ButtonGroup : MonoBehaviour
 {
     public List<Button> buttonList { get { return _buttonList; } }
 

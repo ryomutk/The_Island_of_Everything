@@ -4,4 +4,5 @@ public interface IUIMotion
 {
     bool dontDisturb{get;}
     Tween motion{get;}
+    
 }
