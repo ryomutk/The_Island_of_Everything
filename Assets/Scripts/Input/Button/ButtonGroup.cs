@@ -1,42 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
-[RequireComponent(typeof(CanvasGroup))]
-public class ButtonGroup : MonoBehaviour
+
+public class ButtonGroup
 {
-    public List<Button> buttonList { get { return _buttonList; } }
+    ButtonHolderBase holder;
+    List<Button> _buttonList{get{return holder.buttonList;}}
 
-    List<Button> _buttonList = new List<Button>();
-
-
-    void Start()
+    public ButtonGroup(ButtonHolderBase holder)
     {
-        _buttonList = GetComponentsInChildren<Button>().ToList();
+        this.holder = holder;
     }
 
-    public bool RegisterButton(Button button)
-    {
-        if (!_buttonList.Contains(button))
-        {
-            _buttonList.Add(button);
-            button.transform.SetParent(transform);
-            return true;
-        }
 
-        return false;
-    }
-
-    public bool RemoveButton(Button button)
-    {
-        if (_buttonList.Contains(button))
-        {
-            _buttonList.Remove(button);
-            return true;
-        }
-
-        return false;
-    }
 
     Vector3 clickPosition = new Vector3();
 

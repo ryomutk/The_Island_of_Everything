@@ -28,7 +28,7 @@ where T:IButtonData
         button.gameObject.SetActive(false);
         button.ClearListeners();
         buttonDictionary.Remove(button);
-        RemoveFromCanvas(button);
+        RemoveButton(button);
     }
 
     protected abstract void LoadData(Button instance,T data);
