@@ -2,27 +2,16 @@ using UnityEngine;
 using System.Collections.Generic;
 
 
-public class ButtonGroup
+public static class ButtonInputRecever
 {
-    ButtonHolderBase holder;
-    List<Button> _buttonList{get{return holder.buttonList;}}
-
-    public ButtonGroup(ButtonHolderBase holder)
-    {
-        this.holder = holder;
-    }
-
-
-
-    Vector3 clickPosition = new Vector3();
-
+    
 #if (UNITY_EDITOR || UNITY_WEBGL || UNITY_STANDALONE)
-    MouceContext context = new MouceContext();
-    KeyCode[] observeButtons = new KeyCode[] { KeyCode.Mouse0, KeyCode.Mouse1 };
-    InputState lastState;
+    static MouceContext context = new MouceContext();
+    static KeyCode[] observeButtons = new KeyCode[] { KeyCode.Mouse0, KeyCode.Mouse1 };
+    static InputState lastState;
 #endif
 
-    public void UpdateButons()
+    public static MouceContext GetMouceContext()
     {
 #if (UNITY_IOS || UNITY_ANDROID)
         clickPosition = Input.GetTouch(0).position;
@@ -71,12 +60,7 @@ public class ButtonGroup
             context.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
 
-
-
-        for (int i = 0; i < _buttonList.Count; i++)
-        {
-            _buttonList[i].UpdateButton(context);
-        }
+        return context;
 #endif
     }
 }

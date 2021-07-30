@@ -4,12 +4,12 @@ using System.Collections.Generic;
 /// <summary>
 /// もっとも簡単なボタンの入力処理機関
 /// </summary>
-/// <typeparam name="T"></typeparam>
+/// 
 public class ButtonObserver<T> : IButtonListener
 where T : IButtonData
 {
-    [SerializeField] protected ButtonGroupType type;
-    [SerializeField] protected ButtonHolder<T> holder;
+    protected ButtonGroupType type;
+    protected ButtonHolder<T> holder;
 
     //二つ以上の同時入力を拒否。
     [SerializeField] bool avoidMultiInput = true;
@@ -17,7 +17,7 @@ where T : IButtonData
     //次のフレームに処理されるボタンたち
     List<Button> buttonQueue = new List<Button>();
 
-    public ButtonObserver(ButtonHolder<T> holder)
+    public ButtonObserver(ButtonHolder<T> holder,ButtonGroupType type)
     {
         this.holder = holder;
     }

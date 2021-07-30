@@ -9,7 +9,6 @@ public abstract class ButtonHolderBase : MonoBehaviour
     InstantPool<Button> instancePool;
     [SerializeField] Button buttonPref;
     [SerializeField] int initNum;
-    ButtonGroup canvas;
 
     public List<Button> buttonList { get { return _buttonList; } }
     List<Button> _buttonList = new List<Button>();
@@ -19,7 +18,6 @@ public abstract class ButtonHolderBase : MonoBehaviour
         _buttonList =  GetComponentsInChildren<Button>().ToList();
         instancePool = new InstantPool<Button>(transform);
         instancePool.CreatePool(buttonPref, initNum);
-        canvas = GetComponent<ButtonGroup>();
     }
 
 

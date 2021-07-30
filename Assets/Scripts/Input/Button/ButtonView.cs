@@ -2,19 +2,14 @@ using UnityEngine;
 using System.Collections.Generic;
 
 //ボタンviewの基底クラス。
-public class TestButtonView
+public class TestButtonView:ButtonViewBase
 {
-    protected IButtonMotionData defaultButtonMotion { get; set; }
-    protected ButtonHolderBase holderBase;
+    public TestButtonView(IButtonMotionData motion,ButtonHolderBase holderBase):base(motion,holderBase)
+    {}
+
     protected List<Button> buttonsWatching = new List<Button>();
 
-    public TestButtonView(IButtonMotionData motion, ButtonHolderBase holder)
-    {
-        defaultButtonMotion = motion;
-        holderBase = holder;
-    }
-
-    public void Update()
+    public override void Update()
     {
         DetectState();
     }

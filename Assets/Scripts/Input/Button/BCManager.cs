@@ -5,5 +5,5 @@ using UnityEngine;
 //ButtonCanvasManagerボタンキャンバスの入れ替を行える
 public class BCManager : MonoBehaviour
 {
-
+    
 }

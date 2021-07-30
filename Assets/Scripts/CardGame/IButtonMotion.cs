@@ -11,6 +11,5 @@ public enum ButtonMotionType
 {
     enter,
     exit,
-    selected,
-
+    selected
 }
