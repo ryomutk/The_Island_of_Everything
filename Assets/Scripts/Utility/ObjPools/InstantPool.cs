@@ -29,9 +29,11 @@ namespace Utility.ObjPool
             if (num >= 0)
             {
                 parent = new GameObject(obj.name + "Pool").transform;
+                
                 if (transform != null)
                 {
                     parent.SetParent(transform);
+                    parent.transform.localScale = Vector3.one;
                 }
 
                 objPrefab = obj;
